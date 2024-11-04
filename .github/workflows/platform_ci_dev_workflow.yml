@@ -47,11 +47,9 @@ jobs:
       RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
       WORKSPACE_NAME: ${{ vars.WORKSPACE_NAME }}
     steps:
-      # - name: Checkout Actions
-      #   uses: actions/checkout@v4
       - name: Checkout repo and llmops utils
         # uses: microsoft/llmops-promptflow-template/.github/actions/checkout_llmops@checkout-v1
-        uses: mariamedp/llmops-promptflow-template/.github/actions/checkout_llmops@reusable-external  #FIXME
+        uses: equinor/genaiops-promptflow-template/.github/actions/checkout_llmops@reusable-external  #FIXME
         with:
           llmops_repository: mariamedp/llmops-promptflow-template
           llmops_ref: reusable-external
