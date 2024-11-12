@@ -48,10 +48,9 @@ jobs:
       WORKSPACE_NAME: ${{ vars.WORKSPACE_NAME }}
     steps:
       - name: Checkout repo and llmops utils
-        # uses: microsoft/llmops-promptflow-template/.github/actions/checkout_llmops@checkout-v1
-        uses: equinor/genaiops-promptflow-template/.github/actions/checkout_llmops@reusable-external  #FIXME
+        uses: equinor/genaiops-promptflow-template/.github/actions/checkout_llmops@reusable-external
         with:
-          llmops_repository: mariamedp/llmops-promptflow-template
+          llmops_repository: equinor/genaiops-promptflow-template
           llmops_ref: reusable-external
 
       - name: Azure login
