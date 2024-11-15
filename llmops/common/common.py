@@ -76,7 +76,7 @@ def resolve_env_vars(base_path: str, logger: logging.Logger) -> Dict:
                 value_reference = value.replace('${', '').replace('}', '')
                 try:
                     resolved_value = os.environ[value_reference]
-                    logger.info(f"Reference {value} resolved.")
+                    logger.info(f"Reference {value} resolved for envvar {key}.")
                     os.environ[key] = str(resolved_value)
                     env_vars[key] = str(resolved_value)
                 except KeyError as e:
