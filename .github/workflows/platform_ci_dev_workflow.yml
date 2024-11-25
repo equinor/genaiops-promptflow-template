@@ -47,6 +47,10 @@ jobs:
       RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
       WORKSPACE_NAME: ${{ vars.WORKSPACE_NAME }}
     steps:
+      - name: test step
+        run: |
+          echo "HELLO THIS IS THE FIRST STEP"
+
       - name: Checkout repo and llmops utils
         uses: equinor/genaiops-promptflow-template/.github/actions/checkout_llmops@reusable-external
         with:
