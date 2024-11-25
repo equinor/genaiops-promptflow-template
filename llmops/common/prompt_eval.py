@@ -9,6 +9,8 @@ and experiment.yaml are expected to be found.
 specified, the SUBSCRIPTION_ID environment variable is expected to be provided.
 --build_id: The unique identifier for build execution.
 This argument is not required but will be added as a run tag if specified.
+--branch: the branch in the repo where the pipeline is running from.
+This argument is not required but will be added as a run tag if specified.
 --env_name: The environment name for execution and deployment. This argument
 is not required but will be used to read experiment overlay files if specified.
 --run_id: Run ids of runs to be evaluated (File or comma separated string)
@@ -63,6 +65,7 @@ def prepare_and_execute(
     base_path: Optional[str] = None,
     subscription_id: Optional[str] = None,
     build_id: Optional[str] = None,
+    branch: Optional[str] = None,
     env_name: Optional[str] = None,
     report_dir: Optional[str] = None,
     save_metrics_only: Optional[bool] = False,
@@ -208,6 +211,8 @@ def prepare_and_execute(
                 run_tags = {"data": dataset.name}
                 if build_id:
                     run_tags["build_id"] = build_id
+                if branch:
+                    run_tags["branch"] = branch
 
                 evaluator_executed = True
                 # Create run object
@@ -455,6 +460,7 @@ def prepare_and_execute(
         final_results_df["stage"] = env_name
         final_results_df["experiment_name"] = experiment_name
         final_results_df["build"] = build_id
+        final_results_df["branch"] = branch
 
         allresults_basename = f"{report_dir}/{experiment_name}_result"
         final_results_df.to_csv(f"{allresults_basename}.csv")
@@ -504,6 +510,12 @@ def main():
         default=None,
     )
     parser.add_argument(
+        "--branch",
+        type=str,
+        help="Branch name in the repository",
+        default=None,
+    )
+    parser.add_argument(
         "--run_id",
         type=str,
         required=True,
@@ -531,6 +543,7 @@ def main():
         args.base_path,
         args.subscription_id,
         args.build_id,
+        args.branch,
         args.env_name,
         args.report_dir,
         args.save_metrics_only,

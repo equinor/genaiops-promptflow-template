@@ -13,6 +13,8 @@ and experiment.yaml are expected to be found.
 specified, the SUBSCRIPTION_ID environment variable is expected to be provided.
 --build_id: The unique identifier for build execution.
 This argument is not required but will be added as a run tag if specified.
+--branch: the branch in the repo where the pipeline is running from.
+This argument is not required but will be added as a run tag if specified.
 --env_name: The environment name for execution and deployment. This argument
 is not required but will be used to read experiment overlay files if specified.
 --output_file: A file path to save run IDs. This argument is not required
@@ -142,6 +144,7 @@ def prepare_and_execute(
     subscription_id: Optional[str] = None,
     report_dir: Optional[str] = None,
     build_id: Optional[str] = None,
+    branch: Optional[str] = None,
     env_name: Optional[str] = None,
     output_file: Optional[str] = None,
     save_output: Optional[bool] = None,
@@ -219,6 +222,8 @@ def prepare_and_execute(
         run_tags = {"data": dataset.name}
         if build_id:
             run_tags["build_id"] = build_id
+        if branch:
+            run_tags["branch"] = branch
 
         dataframes = []
         metrics = []
@@ -472,6 +477,7 @@ def prepare_and_execute(
         final_results_df["stage"] = env_name
         final_results_df["experiment_name"] = experiment.name
         final_results_df["build"] = build_id
+        final_results_df["branch"] = branch
         final_results_df.to_csv(f"./{report_dir}/{experiment.name}_result.csv")
         styled_df = final_results_df.to_html(index=False)
         with open(
@@ -540,6 +546,12 @@ def main():
         default=None,
     )
     parser.add_argument(
+        "--branch",
+        type=str,
+        help="Branch name in the repository",
+        default=None,
+    )
+    parser.add_argument(
         "--report_dir",
         type=str,
         default="./reports",
@@ -569,6 +581,7 @@ def main():
         args.subscription_id,
         args.report_dir,
         args.build_id,
+        args.branch,
         args.env_name,
         args.output_file,
         args.save_output,

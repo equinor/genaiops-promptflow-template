@@ -111,6 +111,7 @@ jobs:
             python -m llmops.common.prompt_pipeline \
             --subscription_id ${{ steps.subscription_details.outputs.SUBSCRIPTION_ID }} \
             --build_id ${{ github.run_id }} \
+            --branch ${{ github.head_ref || github.ref_name }} \
             --base_path ${{ inputs.use_case_base_path }} \
             --env_name ${{ inputs.env_name }} \
             --output_file run_id.txt
@@ -160,6 +161,7 @@ jobs:
             python -m llmops.common.prompt_eval \
             --subscription_id ${{ steps.subscription_details.outputs.SUBSCRIPTION_ID }} \
             --build_id ${{ github.run_id }} \
+            --branch ${{ github.head_ref || github.ref_name }} \
             --base_path ${{ inputs.use_case_base_path }} \
             --env_name ${{ inputs.env_name }} \
             --run_id "$RUN_NAME" \
