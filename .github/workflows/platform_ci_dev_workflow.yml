@@ -51,7 +51,7 @@ jobs:
         uses: equinor/genaiops-promptflow-template/.github/actions/checkout_llmops@reusable-external
         with:
           llmops_repository: equinor/genaiops-promptflow-template
-          llmops_ref: reusable-external
+          llmops_ref: feature/branch-name
 
       - name: Azure login
         uses: azure/login@v1
