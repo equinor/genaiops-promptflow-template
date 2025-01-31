@@ -62,7 +62,7 @@ jobs:
             --output_file run_id.txt
 
       - name: Archive CSV
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: evaluation-reports
           path: ./reports

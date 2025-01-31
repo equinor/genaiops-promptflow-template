@@ -35,7 +35,7 @@ jobs:
           PYTHONPATH=. pytest tests --junitxml=junit/test-results.xml --cov=. --cov-report=xml
 
       - name: Publish Unit Test Results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: unit-test-results
           path: "**/test-*.xml"
