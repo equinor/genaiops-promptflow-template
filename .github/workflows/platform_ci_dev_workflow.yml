@@ -173,7 +173,7 @@ jobs:
       # Available as pipeline artifacts
       #=====================================
       - name: Archive CSV
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: evaluation-reports
           path: ./reports
