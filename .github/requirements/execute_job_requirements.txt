@@ -1,12 +1,11 @@
 marshmallow==3.23.2 # promptflow dependency, bug introduced in later versions, change after fix
 azure-ai-ml==1.23.1
-promptflow-azure>=1.12.0
+promptflow-azure>=1.17.2
 azure-ai-resources>=1.0.0b8
-azure-ai-generative[promptflow]>=1.0.0b8
-promptflow-azure>=1.12.0
-promptflow>=1.12.0
-promptflow-tools>=1.4.0
-promptflow-evals>=0.3.0
+azure-ai-generative[promptflow]>=1.0.0b11
+promptflow-azure>=1.17.2
+promptflow-tools>=1.5.0
+promptflow-evals>=0.3.2
 azure-identity==1.16.0
 python-dotenv>=1.0.0
 azureml-mlflow>=1.59.0
