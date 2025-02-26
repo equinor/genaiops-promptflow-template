@@ -13,3 +13,10 @@ azureml-mlflow>=1.59.0
 keyrings.alt
 python-dotenv
 
+# SDKv1 components for backwards compatibility
+azureml-core
+azureml-sdk 
+azureml-pipeline-core
+pandas
+requests
+jsonlines
