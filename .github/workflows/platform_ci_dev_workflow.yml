@@ -26,8 +26,14 @@ on:
         description: "Download only evaluation metrics and exclude detailed results"
         default: false
     secrets:
-      azure_credentials:
-        description: "service principal authentication to Azure"
+      AZURE_CLIENT_ID:
+        description: "Azure Client ID"
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        description: "Azure Subscription ID"
+        required: true
+      AZURE_TENANT_ID:
+        description: "Azure Tenant ID"
         required: true
       registry_details:
         description: "prompt flow registry details"
@@ -54,9 +60,11 @@ jobs:
           llmops_ref: reusable-external
 
       - name: Azure login
-        uses: azure/login@v1
+        uses: azure/login@v2
         with:
-          creds: ${{ secrets.azure_credentials }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Configure Azure ML Agent
         uses: ./.github/actions/configure_azureml_agent
@@ -190,6 +198,8 @@ jobs:
       use_case_base_path: ${{ inputs.use_case_base_path }} 
       deployment_type: ${{ inputs.deployment_type }}
     secrets:
-      azure_credentials: ${{ secrets.azure_credentials }}  
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       registry_details: ${{ secrets.registry_details }}
       ENV_VARS: "${{ secrets.ENV_VARS }}"
