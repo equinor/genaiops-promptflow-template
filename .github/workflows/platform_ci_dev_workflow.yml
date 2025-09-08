@@ -54,10 +54,10 @@ jobs:
       WORKSPACE_NAME: ${{ vars.WORKSPACE_NAME }}
     steps:
       - name: Checkout repo and llmops utils
-        uses: equinor/genaiops-promptflow-template/.github/actions/checkout_llmops@feat/implement-federated-creds
+        uses: equinor/genaiops-promptflow-template/.github/actions/checkout_llmops@federated-creds
         with:
           llmops_repository: equinor/genaiops-promptflow-template
-          llmops_ref: feat/implement-federated-creds
+          llmops_ref: federated-creds
 
       - name: Azure login
         uses: azure/login@v2
