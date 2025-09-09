@@ -45,7 +45,10 @@ on:
 jobs:
   flow-experiment-and_evaluation:
     name: prompt flow experiment and evaluation job
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-static
+    permissions:
+      id-token: write
+      contents: read
     environment:
       name: ${{ inputs.env_name }}
     env:

@@ -50,7 +50,10 @@ on:
 jobs:
   flow-deployment:
     name: prompt flow deployment job
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-static
+    permissions:
+      id-token: write
+      contents: read
     environment:
       name: ${{ inputs.env_name }}
     env:
