@@ -27,6 +27,7 @@ from dotenv import load_dotenv
 from typing import Optional
 import inspect
 import importlib
+import time 
 
 from azure.identity import DefaultAzureCredential
 
@@ -281,11 +282,28 @@ def prepare_and_execute(
                 logger.info(
                     f"Starting run '{run.name}'. This can take a long time.",
                 )
+                # Poll until run finishes (max 10 minutes)
+                max_wait_minutes = 10
+                waited = 0
+                status = run.status
+                while status in ["NotStarted", "Running"] and waited < max_wait_minutes * 60:
+                    time.sleep(30)  # 30s wait
+                    waited += 30
+                    run = pf.get(run.name)   # refresh
+                    logger.info(f"Eval run {run.name} status {run.status}")
+                    status = run.status
+
+                if status == "Completed":
+                    df_result = pf.get_details(run=run)
+                    metric_variant = pf.get_metrics(run)
+                elif status in ["Failed", "Canceled"]:
+                    logger.error(f"Eval run {run.name} ended with status {status}")
+                    df_result, metric_variant = None, None
+                else:
+                    logger.error(f"Eval run {run.name} did not complete after {max_wait_minutes} minutes")
+                    df_result, metric_variant = None, None
 
                 eval_run_ids.append(run.name)
-
-                df_result = pf.get_details(run=run)
-                metric_variant = pf.get_metrics(run)
 
                 if (
                     current_standard_run.properties.get(
