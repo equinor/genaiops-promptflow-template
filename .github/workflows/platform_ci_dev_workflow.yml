@@ -49,18 +49,17 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    environment:
-      name: ${{ inputs.env_name }}
+    environment: ${{ inputs.env_name }}
     env:
       LLMOPS_EXECUTION_TYPE: AZURE
       RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
       WORKSPACE_NAME: ${{ vars.WORKSPACE_NAME }}
     steps:
       - name: Checkout repo and llmops utils
-        uses: equinor/genaiops-promptflow-template/.github/actions/checkout_llmops@reusable-external
+        uses: equinor/genaiops-promptflow-template/.github/actions/checkout_llmops@reusable-external-federated
         with:
           llmops_repository: equinor/genaiops-promptflow-template
-          llmops_ref: reusable-external
+          llmops_ref: reusable-external-federated
 
       - name: Azure login
         uses: azure/login@v2
