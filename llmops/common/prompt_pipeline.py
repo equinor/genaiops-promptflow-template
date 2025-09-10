@@ -52,6 +52,7 @@ python -m llmops.common.prompt_pipeline
 import argparse
 import datetime
 import os
+import time
 import pandas as pd
 from dotenv import load_dotenv
 from enum import Enum
@@ -333,7 +334,29 @@ def prepare_and_execute(
                         logger.info(
                             f"Starting run '{run.name}'. This can take time.",
                         )
-                        df_result = pf.get_details(run=run)
+                  # Execute the run
+                        logger.info(f"Starting run '{run.name}' in Azure ML. This can take time.")
+
+                        max_wait_minutes = 10
+                        waited = 0
+
+                        status = run.status
+                        while status in ["NotStarted", "Running"] and waited < max_wait_minutes * 60:
+                            time.sleep(30)
+                            waited += 30
+                            run = pf.get(run.name)   # refresh status
+                            logger.info(f"Run {run.name} status {run.status}")
+                            status = run.status
+
+                        if status == "Completed":
+                            df_result = pf.get_details(run=run)
+                            logger.info(f"Results:\n{df_result.head(10)}")
+                        elif status in ["Failed", "Canceled"]:
+                            logger.error(f"Run {run.name} ended with status {status}")
+                        else:
+                            logger.error(f"Run {run.name} did not complete after {max_wait_minutes} minutes")
+
+                        #df_result = pf.get_details(run=run)
                         run_ids.append(str(run.name))
                         # wait_job_finish(job, logger)
 
@@ -341,7 +364,6 @@ def prepare_and_execute(
                         logger.info(
                             f"Run {run.name} status {run.status}",
                         )
-                        logger.info(f"Results:\n{df_result.head(10)}")
                         logger.info("Finished processing default variant\n")
 
                         if save_output:
