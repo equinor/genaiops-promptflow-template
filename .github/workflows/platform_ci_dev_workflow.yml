@@ -35,6 +35,9 @@ on:
       AZURE_TENANT_ID:
         description: "Azure Tenant ID"
         required: true
+      CNS_CLIENT_ID:
+        description: "CNS Client ID"
+        required: true
       registry_details:
         description: "prompt flow registry details"
         required: false
@@ -61,12 +64,12 @@ jobs:
           llmops_repository: equinor/genaiops-promptflow-template
           llmops_ref: reusable-external-federated
 
-      # - name: Azure login
-      #   uses: azure/login@v2
-      #   with:
-      #     client-id: ${{ secrets.AZURE_CLIENT_ID }}
-      #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-      #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Configure Azure ML Agent
         uses: ./.github/actions/configure_azureml_agent
@@ -76,12 +79,12 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo "Please complete the device code authentication at https://aka.ms/devicelogin then enter the provided code."
-          az login --use-device-code -t ${{ secrets.AZURE_TENANT_ID }} --output none
-          TOKEN=$(az account get-access-token --resource ${{ secrets.AZURE_CLIENT_ID }} --query accessToken -o tsv)
-          # TOKEN=$(az account get-access-token \
-          #   --resource ${{ secrets.AZURE_CLIENT_ID }} \
-          #   --query accessToken -o tsv)
+          # echo "Please complete the device code authentication at https://aka.ms/devicelogin then enter the provided code."
+          # az login --use-device-code -t ${{ secrets.AZURE_TENANT_ID }} --output none
+          # TOKEN=$(az account get-access-token --resource ${{ secrets.AZURE_CLIENT_ID }} --query accessToken -o tsv)
+          TOKEN=$(az account get-access-token \
+            --resource ${{ secrets.CNS_CLIENT_ID }} \
+            --query accessToken -o tsv)
           echo "ACCESS_TOKEN=$TOKEN" >> .env
           echo "${{ secrets.ENV_VARS }}" >> .env
           # for var in $(cat .env); do
