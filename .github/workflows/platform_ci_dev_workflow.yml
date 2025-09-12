@@ -81,9 +81,9 @@ jobs:
             --query accessToken -o tsv)
           echo "ACCESS_TOKEN=$TOKEN" >> .env
           echo "${{ secrets.ENV_VARS }}" >> .env
-          for var in $(cat .env); do
-            echo "$var" >> $GITHUB_ENV
-          done
+          # for var in $(cat .env); do
+          #   echo "$var" >> $GITHUB_ENV
+          # done
       - name: load .env file
         run: python -c "from dotenv import load_dotenv; load_dotenv()"
 
