@@ -76,6 +76,12 @@ jobs:
 
       - name: Create .env file
         run: |
+          TOKEN=$(az account get-access-token \
+            --resource ${{ secrets.AZURE_CLIENT_ID }} \
+            --query accessToken -o tsv)
+          echo "::add-mask::$TOKEN"
+          echo "ACCESS_TOKEN=$TOKEN" >> .env
+          echo "ACCESS_TOKEN=$TOKEN" >> $GITHUB_ENV
           echo "${{ secrets.ENV_VARS }}" >> .env
           for var in $(cat .env); do
             echo "$var" >> $GITHUB_ENV
