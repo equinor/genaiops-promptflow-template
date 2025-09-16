@@ -81,7 +81,7 @@ jobs:
         run: |
           # echo "Please complete the device code authentication at https://aka.ms/devicelogin then enter the provided code."
           # az login --use-device-code -t ${{ secrets.AZURE_TENANT_ID }} --output none
-          TOKEN=$(az account get-access-token --resource ${{ secrets.CNS_CLIENT_ID }}/.default --query accessToken -o tsv)
+          TOKEN=$(az account get-access-token --resource ${{ secrets.CNS_CLIENT_ID }} --query accessToken -o tsv)
           # TOKEN=$(az account get-access-token \
           #   --resource ${{ secrets.CNS_CLIENT_ID }} \
           #   --query accessToken -o tsv)
